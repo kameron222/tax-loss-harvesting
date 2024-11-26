@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tax Loss Harvesting</title>
+</head>
+<body>
+    <h1>Tax Loss Harvesting</h1>
+    <p>Select a cryptocurrency to run tax loss harvesting:</p>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Currency</th>
+                <th>Current Price (USD)</th>
+                <th>Cost Basis (USD)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for currency in currencies %}
+            <tr>
+                <td>{{ currency.name }} ({{ currency.currency }})</td>
+                <td>{{ currency.current_price }}</td>
+                <td>{{ currency.cost_basis }}</td>
+                <td>
+                    {% if currency.current_price != "N/A" and currency.cost_basis != "N/A" %}
+                    <a href="{{ url_for('run_tax_loss', currency=currency.currency) }}">Run Tax Loss Harvesting</a>
+                    {% else %}
+                    Not Available
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>
