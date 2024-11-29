@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome to Your Dashboard</h1>
-    <p>You are successfully authenticated with Coinbase!</p>
-    <a href="{{ url_for('tax_loss_page') }}">Go to Tax Loss Harvesting</a>
+    <div class="dashboard-container">
+        <div class="profile-section">
+            <div class="profile-circle">{{ initials }}</div>
+        </div>
+        <h1>Welcome, {{ account_name }}!</h1>
+        <p>You are successfully authenticated with Coinbase!</p>
+        <a href="{{ url_for('tax_loss_page') }}" class="btn">Go to Tax Loss Harvesting</a>
+    </div>
 </body>
 </html>
