@@ -52,6 +52,13 @@ def receive_token():
     # Redirect to dashboard
     return redirect(url_for('dashboard'))
 
+@app.route('/logout')
+def logout():
+    """Logs the user out by clearing the session and redirecting to the home page."""
+    session.clear()  # Clear all session data
+    return redirect(url_for('home'))
+
+
 
 @app.route('/dashboard')
 def dashboard():
