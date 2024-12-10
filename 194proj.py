@@ -59,49 +59,18 @@ def logout():
     return redirect(url_for('home'))
 
 
-
 @app.route('/dashboard')
 def dashboard():
-    # Retrieve the access token from the session
     access_token = session.get('access_token')
     if not access_token:
         return redirect(url_for('home'))
 
-    # Make a request to the Coinbase API to fetch the user's account info
     headers = {
         "Authorization": f"Bearer {access_token}"
     }
     response = requests.get("https://api.coinbase.com/v2/user", headers=headers)
 
-    # If the token is expired, try refreshing it
-    if response.status_code == 401:  # Token expired
-        refresh_data = {
-            "grant_type": "refresh_token",
-            "refresh_token": session.get("refresh_token"),
-            "client_id": CLIENT_ID,
-            "client_secret": CLIENT_SECRET,
-        }
-        refresh_response = requests.post(TOKEN_URI, data=refresh_data)
-        if refresh_response.status_code == 200:
-            refresh_data = refresh_response.json()
-            # Update session with new tokens
-            session['access_token'] = refresh_data.get("access_token")
-            session['refresh_token'] = refresh_data.get("refresh_token")
-            # Retry the user fetch with the new token
-            headers["Authorization"] = f"Bearer {session['access_token']}"
-            response = requests.get("https://api.coinbase.com/v2/user", headers=headers)
-        else:
-            return render_template("error.html", message="Failed to refresh token. Please log in again.")
-
-    if response.status_code == 200:
-        user_data = response.json()
-        account_name = user_data['data']['name']
-        initials = "".join([name[0].upper() for name in account_name.split()])
-    else:
-        return render_template("error.html", message="Failed to fetch user information from Coinbase.")
-
-    # Pass the account name and initials to the template
-    return render_template('dashboard.html', account_name=account_name, initials=initials)
+    return render_template('dashboard.html')
 
 
 

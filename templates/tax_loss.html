@@ -39,7 +39,8 @@
             margin: 20px 0;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px;
             border: 1px solid #ddd;
             text-align: center;
@@ -107,7 +108,13 @@
                     <td>{{ currency.name }}</td>
                     <td>{{ currency.current_price }}</td>
                     <td>{{ currency.cost_basis }}</td>
-                    <td><a href="{{ url_for('run_tax_loss', currency=currency.symbol) }}" class="btn">Run Tax Loss Harvesting</a></td>
+                    <td>
+                        {% if currency.current_price != "N/A" and currency.cost_basis != "N/A" %}
+                        <a href="{{ url_for('run_tax_loss', currency=currency.currency) }}">Run Tax Loss Harvesting</a>
+                        {% else %}
+                        Not Available
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
